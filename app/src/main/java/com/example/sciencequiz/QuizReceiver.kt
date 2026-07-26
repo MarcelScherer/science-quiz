@@ -26,7 +26,7 @@ class QuizReceiver : BroadcastReceiver() {
         }
 
         // Zufällige Frage für die Notification wählen
-        val randomEntry = ScienceQuizyData.unit_2.random()
+        val randomEntry = ScienceQuizyData.ScienceQuist.random()
 
         // Intent: Was passiert beim Klick? (App öffnen)
         val clickIntent = Intent(context, MainActivity::class.java).apply {

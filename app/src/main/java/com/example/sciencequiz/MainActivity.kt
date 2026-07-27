@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         }
         checkNotificationPermission()
         scheduleDailyNotification()
+        loadStats()
         
         findViewById<Button>(R.id.btnReset).setOnClickListener {
             resetStats()
@@ -49,8 +50,26 @@ class MainActivity : AppCompatActivity() {
         streak = 0
         totalQuestions = 0
         correctAnswers = 0
+        saveStats()
         updateStatsUI()
         Toast.makeText(this, "Statistik zurückgesetzt", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun saveStats() {
+        val sharedPref = getSharedPreferences("QuizStats", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putInt("streak", streak)
+            putInt("totalQuestions", totalQuestions)
+            putInt("correctAnswers", correctAnswers)
+            apply()
+        }
+    }
+
+    private fun loadStats() {
+        val sharedPref = getSharedPreferences("QuizStats", Context.MODE_PRIVATE)
+        streak = sharedPref.getInt("streak", 0)
+        totalQuestions = sharedPref.getInt("totalQuestions", 0)
+        correctAnswers = sharedPref.getInt("correctAnswers", 0)
     }
 
     private fun updateStatsUI() {
@@ -139,6 +158,7 @@ class MainActivity : AppCompatActivity() {
                     streak = 0
                     Toast.makeText(this, "Falsch! Das war $correctAnswer", Toast.LENGTH_SHORT).show()
                 }
+                saveStats()
                 updateStatsUI()
                 loadNextQuestion()
             }
